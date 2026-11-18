@@ -1,0 +1,16 @@
+---
+import Section from './Section.astro';
+import { contact, identity } from '../content/site';
+---
+<Section id="contact" altitude={contact.altitude} heading={contact.heading} kicker="Low Earth orbit" class="contact">
+  <p class="statement" data-reveal>{contact.text}</p>
+  <div class="contact-row" data-reveal>
+    <a class="email" href={`mailto:${identity.email}`} data-magnetic>{identity.email}</a>
+    <button type="button" class="btn ghost" data-copy={identity.email} data-js-only><span>Copy address</span></button>
+  </div>
+  <ul class="contact-links" data-reveal>
+    {contact.links.map((l) => (
+      <li><a class="btn" href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel={l.href.startsWith('http') ? 'noopener' : undefined} data-magnetic><span>{l.label}</span></a></li>
+    ))}
+  </ul>
+</Section>

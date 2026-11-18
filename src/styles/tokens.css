@@ -1,0 +1,30 @@
+/* Colour values mirror src/lib/palette.ts; palette.test.ts fails if they drift. */
+:root {
+  --g-sunlit: #0F4A47;
+  --g-water: #0A2C30;
+  --g-deep: #06191C;
+  --g-abyss: #030B0D;
+  --g-space: #05060F;
+
+  --fg: #EAF4EE;
+  --muted: #A9C2BB;
+  --aqua: #5FE0CC;
+  --amber: #FFA94D;
+  --peach: #F2C9A6;
+  --fail: #FF6A57;
+
+  --line: rgba(234, 244, 238, 0.14);
+  --line-soft: rgba(234, 244, 238, 0.07);
+  --panel: rgba(3, 11, 13, 0.56);
+  --panel-solid: #071D20;
+
+  --display: 'Archivo Variable', 'Archivo', 'Helvetica Neue', Arial, sans-serif;
+  --text: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --gutter: clamp(20px, 5vw, 72px);
+  --measure: 62ch;
+  --max: 1240px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: dark;
+}

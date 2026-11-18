@@ -1,0 +1,96 @@
+---
+import Section from './Section.astro';
+import { work } from '../content/site';
+const i = work.integration;
+---
+<Section id="work" altitude={work.altitude} heading={work.heading} kicker="Sea level. The work.">
+  <div class="lede">
+    {work.lede.map((p) => <p data-reveal>{p}</p>)}
+  </div>
+
+  <div class="employer" data-reveal><span>{work.employer}</span><span>{work.employerDates}</span></div>
+  <ol class="roles">
+    {work.roles.map((r) => (
+      <li class={r.current ? 'role now' : 'role'} data-reveal data-tilt>
+        <p class="role-dates">{r.dates}</p>
+        <h3>{r.title}</h3>
+        <p>{r.text}</p>
+      </li>
+    ))}
+  </ol>
+
+  <dl class="stats">
+    {work.stats.map((s) => (
+      <div data-reveal>
+        <dd><span data-count={s.value} data-comma={s.comma ? '' : undefined}>{s.comma ? s.value.toLocaleString('en-US') : s.value}</span>{s.suffix ?? ''}</dd>
+        <dt>{s.label}</dt>
+      </div>
+    ))}
+  </dl>
+
+  <div class="block">
+    <h3 data-reveal>{i.heading}</h3>
+    <p data-reveal>{i.text}</p>
+    <div class="flow" data-reveal data-flow>
+      <ul class="flow-sources" aria-label="Source systems">
+        {i.systems.map((s) => (
+          <li data-sys={s.id}><strong>{s.name}</strong><span>{s.role}</span></li>
+        ))}
+      </ul>
+      <svg class="flow-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        {i.systems.map((s, k) => {
+          const y = 12.5 + k * 25;
+          return <path data-line={s.id} d={`M0 ${y} C 50 ${y}, 50 50, 100 50`} vector-effect="non-scaling-stroke" />;
+        })}
+      </svg>
+      <div class="flow-target">
+        <strong>{i.target}</strong>
+        <span>{i.targetNote}</span>
+      </div>
+    </div>
+    <p class="records-note" data-reveal>{i.recordsNote}</p>
+    <ul class="chips" data-reveal>
+      {i.records.map((r) => <li>{r}</li>)}
+    </ul>
+  </div>
+
+  <div class="two">
+    <div class="block">
+      <h3 data-reveal>{work.built.heading}</h3>
+      <ul class="rows">
+        {work.built.items.map((b) => <li data-reveal><strong>{b.name}</strong><span>{b.text}</span></li>)}
+      </ul>
+    </div>
+    <div class="block">
+      <h3 data-reveal>{work.marketing.heading}</h3>
+      <p data-reveal>{work.marketing.text}</p>
+      <ul class="rows">
+        {work.marketing.events.map((e) => <li data-reveal><strong>{e.name}</strong><span>{e.text}</span></li>)}
+      </ul>
+      <p data-reveal>{work.marketing.ongoing}</p>
+    </div>
+  </div>
+
+  <article class="brand" data-reveal>
+    <div>
+      <p class="role-dates">{work.brand.dates}</p>
+      <h3>{work.brand.heading}</h3>
+      <p>{work.brand.text}</p>
+      <a class="btn" href={work.brand.href} target="_blank" rel="noopener" data-magnetic><span>{work.brand.hrefLabel}</span></a>
+    </div>
+    <ul class="ticks">
+      {work.brand.items.map((b) => <li>{b}</li>)}
+    </ul>
+  </article>
+
+  <div class="earlier">
+    {work.earlier.map((e) => (
+      <article data-reveal>
+        <p class="role-dates">{e.dates}</p>
+        <h3>{e.org}</h3>
+        <p class="earlier-role">{e.role}</p>
+        <p>{e.text}</p>
+      </article>
+    ))}
+  </div>
+</Section>

@@ -1,0 +1,39 @@
+---
+import Section from './Section.astro';
+import { record } from '../content/site';
+const e = record.education;
+---
+<Section id="record" altitude={record.altitude} heading={record.heading} kicker="Climbing">
+  <div class="record-grid">
+    <article class="record-main" data-reveal>
+      <h3>{e.school}</h3>
+      <p class="degree">{e.degree}</p>
+      <p class="gpa">{e.gpa}</p>
+      <ul class="honors">{e.honors.map((h) => <li>{h}</li>)}</ul>
+      <details>
+        <summary>Coursework</summary>
+        <p>{e.completed}</p>
+        <p>{e.inProgress}</p>
+      </details>
+    </article>
+    <article data-reveal>
+      <p class="role-dates">{record.research.dates}</p>
+      <h3>{record.research.title}</h3>
+      <p>{record.research.text}</p>
+    </article>
+    <article data-reveal>
+      <h3>Certifications and training</h3>
+      <ul class="rows">
+        {record.certifications.map((c) => <li><strong>{c.name}</strong><span>{c.by}. {c.when}.</span></li>)}
+      </ul>
+    </article>
+  </div>
+  <div class="skills">
+    {record.skills.map((g) => (
+      <div data-reveal>
+        <h3>{g.name}</h3>
+        <ul class="chips">{g.items.map((s) => <li>{s}</li>)}</ul>
+      </div>
+    ))}
+  </div>
+</Section>

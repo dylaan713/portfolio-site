@@ -1,0 +1,14 @@
+---
+import { formatDepth } from '../lib/depth';
+interface Props { id: string; altitude: number; heading: string; kicker?: string; class?: string }
+const { id, altitude, heading, kicker, class: cls = '' } = Astro.props;
+---
+<section id={id} data-depth={altitude} class={`section ${cls}`} aria-labelledby={`${id}-h`}>
+  <div class="wrap">
+    <header class="section-head">
+      <p class="alt"><span class="alt-reading">{formatDepth(altitude)}</span>{kicker && <span class="alt-kicker">{kicker}</span>}</p>
+      <h2 id={`${id}-h`} data-split>{heading}</h2>
+    </header>
+    <slot />
+  </div>
+</section>

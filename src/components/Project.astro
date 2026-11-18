@@ -1,0 +1,43 @@
+---
+import Section from './Section.astro';
+interface Readout { value: number; decimals: number; unit: string; label: string; prefix?: string }
+interface Props {
+  id: string; altitude: number; title: string; heading: string; meta: string; status: string;
+  statusKind: 'built' | 'designed' | 'concept';
+  facts: string[]; readouts?: Readout[];
+  tool: { name: string; intro: string; model: string; honesty: string };
+}
+const { id, altitude, title, heading, meta, status, statusKind, facts, readouts = [], tool } = Astro.props;
+---
+<Section id={id} altitude={altitude} heading={heading} kicker={title} class="project">
+  <div class="project-top">
+    <div class="project-facts">
+      <p class="project-meta" data-reveal><span>{meta}</span><span class={`status status-${statusKind}`}>{status}</span></p>
+      <ul class="facts">
+        {facts.map((f) => <li data-reveal>{f}</li>)}
+      </ul>
+    </div>
+    {readouts.length > 0 && (
+      <dl class="readouts">
+        {readouts.map((r) => (
+          <div data-reveal>
+            <dd>{r.prefix ?? ''}<span data-count={r.value} data-decimals={r.decimals}>{r.value.toFixed(r.decimals)}</span>{r.unit && <small> {r.unit}</small>}</dd>
+            <dt>{r.label}</dt>
+          </div>
+        ))}
+      </dl>
+    )}
+  </div>
+
+  <div class="tool" data-tool={id} data-reveal>
+    <div class="tool-head">
+      <h3>{tool.name}</h3>
+      <p>{tool.intro}</p>
+    </div>
+    <slot />
+    <div class="tool-foot">
+      <p>{tool.model}</p>
+      <p>{tool.honesty}</p>
+    </div>
+  </div>
+</Section>

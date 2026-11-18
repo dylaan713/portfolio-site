@@ -1,0 +1,58 @@
+---
+import Section from './Section.astro';
+import { life } from '../content/site';
+const pads = [
+  { note: 'C', hz: 261.63 }, { note: 'D', hz: 293.66 }, { note: 'E', hz: 329.63 }, { note: 'G', hz: 392.0 },
+  { note: 'A', hz: 440.0 }, { note: 'C', hz: 523.25 }, { note: 'D', hz: 587.33 }, { note: 'E', hz: 659.25 },
+];
+---
+<Section id="life" altitude={life.altitude} heading={life.heading} kicker="Back at the surface">
+  <div class="lede"><p data-reveal>{life.lede}</p></div>
+  <div class="life-grid">
+    <article class="life-card" data-reveal data-life="lifting">
+      <h3>{life.lifting.title}</h3>
+      <p>{life.lifting.text}</p>
+      <div class="lift" data-lift>
+        <p class="lift-target"><span class="lift-label">Next target</span><strong><span data-out="weight">130</span> lb × <span data-out="reps">11</span></strong></p>
+        <div class="lift-bars" data-lift-bars aria-hidden="true"></div>
+        <button type="button" class="btn" data-action="log" data-js-only><span>Log the set</span></button>
+        <p class="note" role="status" data-out="lift-status">{life.lifting.demoNote}</p>
+      </div>
+      <p class="life-link"><a href={life.lifting.app.href} target="_blank" rel="noopener">{life.lifting.app.name}, the app I built for it</a><span>{life.lifting.app.note}</span></p>
+    </article>
+
+    <article class="life-card" data-reveal data-life="running" data-race={life.running.raceDate.join(',')}>
+      <h3>{life.running.title}</h3>
+      <p>{life.running.text}</p>
+      <p class="countdown" data-js-only><strong data-out="days">&nbsp;</strong><span data-out="days-label">&nbsp;</span></p>
+      <div class="field">
+        <label for="run-goal">Goal time</label>
+        <output for="run-goal" id="run-goal-out">4:00</output>
+        <input type="range" id="run-goal" min="180" max="360" step="5" value="240" />
+      </div>
+      <p class="outline"><strong data-out="pace">9:09 per mile</strong><span>over {life.running.miles.toFixed(1)} miles</span></p>
+    </article>
+
+    <article class="life-card" data-reveal data-life="music">
+      <h3>{life.music.title}</h3>
+      <p>{life.music.text}</p>
+      <div class="pads" role="group" aria-label="Eight playable notes" data-pads data-js-only>
+        {pads.map((p, k) => <button type="button" data-hz={p.hz} aria-label={`Play ${p.note}`} style={`--h:${28 + k * 9}%`}><i></i></button>)}
+      </div>
+      <p class="note" data-js-only>{life.music.hint}. Sound plays only when you press one.</p>
+    </article>
+
+    <article class="life-card wide" data-reveal data-life="travel">
+      <div>
+        <h3>{life.outdoors.title}</h3>
+        <p>{life.outdoors.text}</p>
+        <h3>{life.travel.title}</h3>
+        <p>{life.travel.text}</p>
+      </div>
+      <div class="globe-wrap">
+        <canvas class="globe" data-globe width="320" height="320" role="img" aria-label="A wireframe globe that turns when dragged."></canvas>
+        <p class="note" data-js-only>{life.travel.hint}</p>
+      </div>
+    </article>
+  </div>
+</Section>

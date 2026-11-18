@@ -1,0 +1,45 @@
+---
+import Range from './Range.astro';
+import { truss } from '../content/site';
+import { solveState, trussDefs, trussSummary, trussSvg, VIEW, type TrussState } from '../lib/views/truss-view';
+const d = truss.tool.defaults;
+const state: TrussState = { ...d, loadNode: null };
+const sol = solveState(state);
+const sum = trussSummary(state, sol);
+---
+<div class="tool-body" data-defaults={JSON.stringify(d)} data-tested={truss.tool.testedLoad}>
+  <div class="tool-view">
+    <svg class="truss-svg" viewBox={`0 0 ${VIEW.w} ${VIEW.h}`} role="img" aria-label="Cantilever truss fixed to a wall on the left with a downward load. Members are drawn thicker as they carry more force.">
+      <Fragment set:html={trussDefs()} />
+      <g data-truss set:html={trussSvg(state, sol)} />
+    </svg>
+    <p class="view-hint" data-js-only>Drag the arrow to change the load. Pick a joint to move it there. Point at a member to read its force.</p>
+    <p class="member-readout" data-member-readout aria-live="polite"></p>
+    <ul class="legend">
+      <li class="lg-tension">Tension</li>
+      <li class="lg-compression">Compression</li>
+      <li class="lg-fail">Failed</li>
+    </ul>
+  </div>
+  <div class="tool-controls">
+    <Range id="t-load" label="Load" min={0} max={40} step={0.1} value={d.load} unit="N" decimals={1} />
+    <Range id="t-strength" label="Member strength" min={20} max={150} step={0.1} value={d.strength} unit="N" decimals={1} />
+    <Range id="t-depth" label="Truss depth" min={3} max={12} step={0.25} value={d.depthCm} unit="cm" decimals={2} />
+    <Range id="t-panels" label="Panels" min={2} max={6} step={1} value={d.panels} />
+    <Range id="t-node" label="Load at joint (from the wall)" min={1} max={d.panels} step={1} value={d.panels} />
+    <fieldset class="seg">
+      <legend>Diagonals</legend>
+      <label><input type="radio" name="t-diag" value="howe" checked /><span>Howe</span></label>
+      <label><input type="radio" name="t-diag" value="pratt" /><span>Pratt</span></label>
+    </fieldset>
+    <dl class="results" aria-live="polite">
+      <div class="live"><dt>Critical member</dt><dd data-out="critical">{sum.critical}</dd><dd class="sub" data-out="criticalKind">{sum.criticalKind}, {sum.sign}</dd></div>
+      <div><dt>This truss fails at</dt><dd data-out="failLoad">{sum.failLoad}</dd><dd class="sub" data-out="margin">{sum.margin} of strength used</dd></div>
+    </dl>
+    <p class={`verdict${sum.failed ? ' bad' : ''}`} data-out="status" role="status">{sum.status}</p>
+    <div class="tool-actions" data-js-only>
+      <button type="button" class="btn" data-action="tested" data-magnetic><span>Load it to 20.7 N</span></button>
+      <button type="button" class="btn ghost" data-action="reset"><span>Reset</span></button>
+    </div>
+  </div>
+</div>

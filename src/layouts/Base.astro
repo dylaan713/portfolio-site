@@ -1,0 +1,52 @@
+---
+import '@fontsource-variable/archivo/wdth.css';
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import '../styles/tools.css';
+import { ground } from '../lib/palette';
+
+interface Props { title: string; description: string }
+const { title, description } = Astro.props;
+const canonical = new URL('/', Astro.site).href;
+const ogImage = new URL('/og.png', Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Dylan Wollet" />
+    <meta name="theme-color" content={ground.deep} />
+    <meta name="color-scheme" content="dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>
+      // Marks the page as scripted before first paint so the loader and the
+      // reveal states never flash. Skipped for reduced motion and repeat visits.
+      (function () {
+        var d = document.documentElement;
+        d.classList.add('js');
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var seen = false;
+        try { seen = sessionStorage.getItem('dive-seen') === '1'; } catch (e) {}
+        if (!reduce) d.classList.add('motion');
+        if (!reduce && !seen) d.classList.add('loading');
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

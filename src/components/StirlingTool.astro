@@ -1,0 +1,32 @@
+---
+import Range from './Range.astro';
+import { cycle, defaultStirling } from '../lib/stirling';
+import { MECH, PV, mechanismSvg, pvSvg, stirlingSummary } from '../lib/views/stirling-view';
+const spec = defaultStirling;
+const c = cycle(spec);
+const theta = 0.9;
+const sum = stirlingSummary(spec, c);
+---
+<div class="tool-body">
+  <div class="tool-view">
+    <svg class="stirling-svg" viewBox={`0 0 ${MECH.w} ${MECH.h}`} role="img" aria-label="Schematic of a gamma-type Stirling engine: a displacer cylinder with a hot end and a cold end, a power piston, and a flywheel that drives both a quarter turn apart.">
+      <g data-mech set:html={mechanismSvg(spec, theta)} />
+    </svg>
+    <p class="view-hint" data-js-only>Drag the flywheel, or flick it. Point at a part to name it.</p>
+    <p class="member-readout" data-part-readout aria-live="polite"></p>
+  </div>
+  <div class="tool-controls">
+    <svg class="pv-svg" viewBox={`0 0 ${PV.w} ${PV.h}`} role="img" aria-label="Pressure against volume over one revolution. The area inside the loop is the work per cycle.">
+      <g data-pv set:html={pvSvg(c, theta)} />
+    </svg>
+    <Range id="s-hot" label="Hot end" min={300} max={900} step={10} value={spec.hot} unit="K" />
+    <Range id="s-cold" label="Cold end" min={250} max={400} step={5} value={spec.cold} unit="K" />
+    <Range id="s-phase" label="Phase lead" min={0} max={180} step={5} value={90} unit="°" />
+    <dl class="results" aria-live="polite">
+      <div class="live"><dt>Carnot limit</dt><dd data-out="carnot">{sum.carnot}</dd><dd class="sub">The most any engine could convert between these temperatures</dd></div>
+      <div><dt>Work per cycle</dt><dd data-out="work">{sum.work}</dd><dd class="sub">As a fraction of mean pressure times swept volume</dd></div>
+      <div><dt>Pressure ratio</dt><dd data-out="ratio">{sum.ratio}</dd><dd class="sub">Highest over lowest in the cycle</dd></div>
+    </dl>
+    <p class="verdict" data-out="status" role="status">{sum.status}</p>
+  </div>
+</div>

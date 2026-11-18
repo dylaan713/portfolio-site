@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Work from '../components/Work.astro';
+import Project from '../components/Project.astro';
+import TrussTool from '../components/TrussTool.astro';
+import StirlingTool from '../components/StirlingTool.astro';
+import SizingTool from '../components/SizingTool.astro';
+import RovTool from '../components/RovTool.astro';
+import Life from '../components/Life.astro';
+import Record from '../components/Record.astro';
+import Contact from '../components/Contact.astro';
+import { contact, dog, identity, nav, rov, stirling, truss } from '../content/site';
+---
+<Base title={identity.title} description={identity.description}>
+  <a class="skip" href="#main">Skip to content</a>
+  <canvas id="column" aria-hidden="true"></canvas>
+  <div class="grain" aria-hidden="true"></div>
+
+  <div id="loader" aria-hidden="true">
+    <div class="loader-top"><span>{identity.name}</span><span>{identity.discipline}</span><span>{identity.location}</span></div>
+    <canvas id="loader-dots"></canvas>
+    <div class="loader-foot">
+      <p class="loader-count"><span id="loader-num">000</span><span class="pct">%</span></p>
+      <p class="loader-line"><span>Descending</span><span id="loader-depth">000.0 m</span></p>
+      <div class="loader-bar"><i id="loader-fill"></i></div>
+    </div>
+  </div>
+
+  <header class="bar">
+    <a class="bar-name" href="#top">{identity.name}</a>
+    <nav aria-label="Sections">
+      <ul>{nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}</ul>
+    </nav>
+    <p class="bar-depth" aria-hidden="true"><span id="depth-out">+000.0 m</span></p>
+  </header>
+
+  <div class="rail" aria-hidden="true"><div id="rail-ticks"></div><i id="rail-mark"></i></div>
+
+  <main id="main">
+    <Hero />
+    <Work />
+    <Project id="truss" altitude={truss.altitude} title={truss.title} heading={truss.heading} meta={truss.meta} status={truss.status} statusKind="built" facts={truss.facts} readouts={truss.readouts} tool={truss.tool}>
+      <TrussTool />
+    </Project>
+    <Project id="stirling" altitude={stirling.altitude} title={stirling.title} heading={stirling.heading} meta={stirling.meta} status={stirling.status} statusKind="built" facts={stirling.facts} tool={stirling.tool}>
+      <StirlingTool />
+    </Project>
+    <Project id="dog" altitude={dog.altitude} title={dog.title} heading={dog.heading} meta={dog.meta} status={dog.status} statusKind="designed" facts={dog.facts} readouts={dog.readouts} tool={dog.tool}>
+      <SizingTool />
+    </Project>
+    <Project id="rov" altitude={rov.altitude} title={rov.title} heading={rov.heading} meta={rov.meta} status={rov.status} statusKind="concept" facts={rov.facts} tool={rov.tool}>
+      <RovTool />
+    </Project>
+    <Life />
+    <Record />
+    <Contact />
+  </main>
+
+  <footer class="foot">
+    <p>{contact.colophon}</p>
+    <p>{identity.name}, {new Date().getFullYear()}</p>
+  </footer>
+
+  <script>
+    import '../scripts/main';
+  </script>
+</Base>

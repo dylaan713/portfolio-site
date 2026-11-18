@@ -1,0 +1,47 @@
+---
+import Range from './Range.astro';
+import { materials } from '../lib/sizing';
+import { sizingDefaults, solveSizing } from '../lib/views/sizing-view';
+const s = sizingDefaults;
+const sol = solveSizing(s);
+---
+<div class="tool-body sizing">
+  <div class="tool-view">
+    <div class="parts">
+      {sol.rows.map((r) => (
+        <fieldset class="part" data-part={r.part.id}>
+          <legend>{r.part.name}{r.part.count > 1 ? ` (${r.part.count})` : ''}</legend>
+          <div class="mat">
+            {materials.map((m) => (
+              <label><input type="radio" name={`m-${r.part.id}`} value={m.id} checked={s.choice[r.part.id] === m.id} /><span>{m.name}</span></label>
+            ))}
+          </div>
+          <div class="bar-wrap" aria-hidden="true"><div class="thick" data-thick style={`height:${Math.min(44, Math.max(3, r.sized.thickness * 1000 * 1.1)).toFixed(1)}px`}></div></div>
+          <dl class="part-out">
+            <div><dt>Thickness</dt><dd><span data-out="t">{r.thicknessMm}</span> mm</dd></div>
+            <div><dt>Governed by</dt><dd data-out="g">{r.governs}</dd></div>
+            <div><dt>Mass</dt><dd><span data-out="m">{r.massLb}</span> lb</dd></div>
+            <div><dt>Stock</dt><dd>$<span data-out="c">{r.cost}</span></dd></div>
+          </dl>
+        </fieldset>
+      ))}
+    </div>
+  </div>
+  <div class="tool-controls">
+    <Range id="z-defl" label="Deflection limit, span over" min={60} max={480} step={10} value={s.deflectionRatio} />
+    <Range id="z-sf" label="Safety factor on yield" min={1} max={4} step={0.1} value={s.safety} decimals={1} />
+    <Range id="z-mass" label="Weight limit" min={5} max={60} step={1} value={s.massLimitLb} unit="lb" />
+    <Range id="z-cost" label="Stock cost limit" min={20} max={600} step={10} value={s.costLimit} unit="$" />
+    <div class="meters" aria-live="polite">
+      <div class={`meter${sol.withinMass ? '' : ' over'}`} data-meter="mass">
+        <p><span>Weight</span><strong><span data-out="mass">{sol.massLb.toFixed(2)}</span> lb</strong></p>
+        <div class="meter-track"><div class="meter-fill" style={`width:${sol.massPct.toFixed(1)}%`}></div></div>
+      </div>
+      <div class={`meter${sol.withinCost ? '' : ' over'}`} data-meter="cost">
+        <p><span>Stock cost</span><strong>$<span data-out="cost">{sol.cost.toFixed(2)}</span></strong></p>
+        <div class="meter-track"><div class="meter-fill" style={`width:${sol.costPct.toFixed(1)}%`}></div></div>
+      </div>
+    </div>
+    <p class={`verdict${sol.ok ? '' : ' bad'}`} data-out="status" role="status">{sol.status}</p>
+  </div>
+</div>

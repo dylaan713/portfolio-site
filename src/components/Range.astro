@@ -1,0 +1,9 @@
+---
+interface Props { id: string; label: string; min: number; max: number; step: number; value: number; unit?: string; decimals?: number }
+const { id, label, min, max, step, value, unit = '', decimals = 0 } = Astro.props;
+---
+<div class="field">
+  <label for={id}>{label}</label>
+  <output for={id} id={`${id}-out`}>{value.toFixed(decimals)}{unit ? ` ${unit}` : ''}</output>
+  <input type="range" id={id} name={id} min={min} max={max} step={step} value={value} data-unit={unit} data-decimals={decimals} />
+</div>

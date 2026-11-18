@@ -1,0 +1,36 @@
+---
+import { hero, identity } from '../content/site';
+const words = identity.name.split(' ');
+---
+<section id="top" data-depth="0" class="hero" aria-labelledby="top-h">
+  <div class="wrap">
+    <p class="alt" data-reveal><span class="alt-reading">+000.0 m</span><span class="alt-kicker">Sea level</span></p>
+    <h1 id="top-h" aria-label={identity.name} class="name">
+      {words.map((w, wi) => (
+        <span class="word" aria-hidden="true">{w.split('').map((ch, ci) => <span class="ch" style={`--i:${wi * 4 + ci}`}>{ch}</span>)}</span>
+      ))}
+    </h1>
+    <div class="hero-body">
+      <p class="statement" data-reveal>{hero.statement}</p>
+      <div class="hero-meta" data-reveal>
+        <p>{hero.context}</p>
+        <dl class="vitals">
+          <div><dt>Graduating</dt><dd>{identity.graduation}</dd></div>
+          <div><dt>GPA</dt><dd>{identity.gpa.toFixed(3)} / {identity.gpaScale}</dd></div>
+        </dl>
+        <p class="seeking">{identity.seeking}</p>
+      </div>
+    </div>
+    <ul class="proof">
+      {hero.proof.map((p) => (
+        <li data-reveal>
+          <a href={p.href} data-tilt>
+            <span class="proof-figure">{p.figure}</span>
+            <span class="proof-text">{p.text}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="dive-hint" aria-hidden="true"><span class="dive-line"></span>{hero.hint}</p>
+  </div>
+</section>
